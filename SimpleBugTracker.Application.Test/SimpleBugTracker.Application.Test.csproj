@@ -27,4 +27,9 @@
     <Using Include="NUnit.Framework" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Bugs\Commands\" />
+    <Folder Include="Bugs\Queries\" />
+  </ItemGroup>
+
 </Project>
