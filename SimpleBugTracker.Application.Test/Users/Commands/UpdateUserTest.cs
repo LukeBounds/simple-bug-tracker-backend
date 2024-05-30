@@ -18,13 +18,13 @@ namespace SimpleBugTracker.Application.Test.Users.Commands
         }
 
         [Test]
-        public async Task UpdateUserTest1()
+        public async Task UpdateUser_CommandHandler_Handle_Test()
         {
             var db = Testing.GetTestContext();
 
             var user = new User();
             db.Users.Add(user);
-            db.SaveChangesAsync(CancellationToken.None);
+            await db.SaveChangesAsync(CancellationToken.None);
 
             var updatedUserDto = Testing._mapper.Map<UserDto>(user);
             updatedUserDto.Name = "Test";

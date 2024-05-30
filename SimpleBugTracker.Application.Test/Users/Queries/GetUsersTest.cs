@@ -19,17 +19,19 @@ namespace SimpleBugTracker.Application.Test.Users.Queries
         }
 
         [Test]
-        public async Task GetUsersTest1()
+        public async Task GetUsers_QueryHandler_Handle_Test()
         {
             var db = Testing.GetTestContext();
             
             var user = new User();
             db.Users.Add(user);
-            db.SaveChangesAsync(CancellationToken.None);
+            var dbSave = db.SaveChangesAsync(CancellationToken.None);
 
             var command = new GetUsersQuery();
 
             var handler = new GetUsersQueryHandler(db, Testing._mapper);
+
+            await dbSave;
             //--
 
             var users = await handler.Handle(command, CancellationToken.None);
