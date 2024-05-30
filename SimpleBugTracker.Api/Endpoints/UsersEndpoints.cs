@@ -1,5 +1,7 @@
 ﻿using SimpleBugTracker.Application.Users.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using SimpleBugTracker.Application.Users.Commands;
 
 namespace SimpleBugTracker.API.Endpoints
 {
@@ -10,6 +12,7 @@ namespace SimpleBugTracker.API.Endpoints
             var group = app.MapGroup("/users");
 
             group.MapGet("", GetUsers);
+            group.MapPost("", CreateUser);
         }
 
         public static async Task<IResult> GetUsers(ISender sender, [AsParameters] GetUsersQuery query)
@@ -17,6 +20,20 @@ namespace SimpleBugTracker.API.Endpoints
             try
             {
                 var ret = await sender.Send(query);
+
+                return Results.Ok(ret);
+            }
+            catch (Exception ex)
+            {
+                return Results.BadRequest(ex.Message);
+            }
+        }
+
+        public static async Task<IResult> CreateUser(ISender sender, [FromBody] CreateUserCommand command)
+        {
+            try
+            {
+                var ret = await sender.Send(command);
 
                 return Results.Ok(ret);
             }
