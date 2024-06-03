@@ -1,6 +1,8 @@
 using SimpleBugTracker.Application;
 using SimpleBugTracker.API.Endpoints;
 using SimpleBugTracker.Infrastructure;
+using Ardalis.GuardClauses;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,11 +24,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
-
 var app = builder.Build();
 
+var useSwagger = builder.Configuration.GetValue<bool>("UseSwagger");
+
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || useSwagger)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
