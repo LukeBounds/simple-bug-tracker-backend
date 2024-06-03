@@ -15,17 +15,18 @@ namespace SimpleBugTracker.Application.Test.Bugs.Commands
 {
     internal class CreateBugTest
     {
+        IUserService _userService;
+
         [SetUp]
         public void Setup()
         {
-
+            _userService = new UserService();
         }
 
         [Test]
         public async Task CreateBug_CommandHandler_Handle_Test()
         {
             var db = Testing.GetTestContext();
-            IUserService userService = new UserService();
             
             var user = new User();
             db.Users.Add(user);
@@ -41,7 +42,7 @@ namespace SimpleBugTracker.Application.Test.Bugs.Commands
                 Bug = bugDto,
             };
 
-            var handler = new CreateBugCommandHandler(db, Testing._mapper, userService);
+            var handler = new CreateBugCommandHandler(db, Testing._mapper, _userService);
             //--
 
             var bugId = await handler.Handle(command, CancellationToken.None);
